@@ -1,0 +1,24 @@
+id: CHECK-CPF-STATUS-SERPRO
+journeyId: CHECK-CPF-STATUS-BASE
+productName: Check CPF Status Serpro
+clientPolicyId: null
+secondaryClientPolicyId: null
+
+template:
+  $ref: ../company-template.yaml
+
+journeyRules: [NotBlocked, NotExpired, NotCompleted]
+
+stages:
+  check-cpf-status:
+    provider: SERPRO
+    stageRules:
+      validations: [BeCurrentStage]
+    executions:
+      pre: []
+      post: [checkCpfStatus.persist]
+
+  blocked-by-check-cpf-status:
+    metadata:
+      errorType: TRANSACTION_REJECTED_BY_CHECK_CPF_STATUS
+      errorStatus: BLOCKED_BY_CHECK_CPF_STATUS

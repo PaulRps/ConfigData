@@ -1,0 +1,22 @@
+id: CHECK-CPF-STATUS-BASE
+description: Jornada de teste isolada para modulo Check CPF Status
+stages:
+  - id: start
+    kind: start
+    next: { stageId: check-cpf-status }
+
+  - id: check-cpf-status
+    kind: execution
+    module: CHECK_CPF_STATUS
+    next:
+      decisionTable:
+        decisionMaker: APPROVED_MODULE
+        conditions:
+          - { case: "yes", stageId: finalize }
+          - { case: "no", stageId: blocked-by-check-cpf-status }
+
+  - id: blocked-by-check-cpf-status
+    kind: failed_end
+
+  - id: finalize
+    kind: end
